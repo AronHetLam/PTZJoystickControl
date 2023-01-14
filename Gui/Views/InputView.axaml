@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:PtzJoystickControl.Gui.ViewModels"
+             xmlns:v="using:PtzJoystickControl.Gui.Views"
+			 xmlns:local="using:PtzJoystickControl.Gui.Views"
+             mc:Ignorable="d" d:DesignWidth="600"
+             x:Class="PtzJoystickControl.Gui.Views.InputView">
+	<Grid Margin="2" ColumnDefinitions="80,3,*" RowDefinitions="25, auto, auto">
+		<ProgressBar Value="{Binding InputValue}" Grid.Column="0" Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MinWidth="0"/>
+		<TextBlock Text="{Binding Name}" Grid.Column="0" VerticalAlignment="Center" Margin="2,0"/>
+
+		<local:InputCommandView Grid.Row="0" Grid.Column="2" DataContext="{Binding}"/>
+		<Panel IsVisible="{Binding ShowSecondCommand}" Grid.Row="1" Grid.Column="2" Margin="0,4,0,0">
+			<local:InputCommandView DataContext="{Binding SecondInputdiewModel}"/>
+		</Panel>
+	</Grid>
+</UserControl>

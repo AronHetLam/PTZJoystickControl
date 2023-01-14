@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="50"
+             x:Class="PtzJoystickControl.Gui.Views.AxisSettingsView">
+	<UserControl.Resources>
+
+		<Thickness x:Key="SliderTopHeaderMargin">0,0,0,0</Thickness>
+		<GridLength x:Key="SliderPreContentMargin">0</GridLength>
+		<GridLength x:Key="SliderPostContentMargin">0</GridLength>
+		<x:Double x:Key="SliderHorizontalHeight">24</x:Double>
+		<x:Double x:Key="SliderHorizontalThumbWidth">6</x:Double>
+		<x:Double x:Key="SliderHorizontalThumbHeight">20</x:Double>
+		<Color x:Key="SliderTrackValueFill">#0000</Color>
+		<Color x:Key="SliderTrackValueFillDisabled">#0000</Color>
+		<Color x:Key="SliderTrackValueFillPointerOver">#0000</Color>
+		<Color x:Key="SliderTrackValueFillPressed">#0000</Color>
+		<Color x:Key="SliderTrackFill">#0000</Color>
+		<Color x:Key="SliderTrackFillDisabled">#0000</Color>
+		<Color x:Key="SliderTrackFillPointerOver">#0000</Color>
+		<Color x:Key="SliderTrackFillPressed">#0000</Color>
+		<Color x:Key="SliderThumbBackgroundDisabled">#777</Color>
+	</UserControl.Resources>
+	<UserControl.Styles>
+		<Style Selector="Thumb.SliderThumbStyle">
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{DynamicResource SliderThumbCornerRadius}" />
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Styles>
+	<Grid ColumnDefinitions="3,1*,2*,1*,4*,3" RowDefinitions="Auto, Auto" IsVisible="{Binding ShowAxisSettings}" >
+		<StackPanel Orientation="Horizontal" Spacing="2" Margin="0,2">
+			<ToggleButton Padding="2,0" VerticalAlignment="Stretch" IsChecked="{Binding DefaultCenter}" IsVisible="{Binding IsAxis}" ToolTip.Tip="Centered">
+				<PathIcon Width="18" IsHitTestVisible="False" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 18,12 V 9 h 4 V 7 h -4 V 4 L 14,8 Z M 4,4 V 7 H 0 v 2 h 4 v 3 L 8,8 Z m 6,12 h 2 V 0 h -2 z"/>
+			</ToggleButton>
+			<ToggleButton Padding="2,0" VerticalAlignment="Stretch" IsChecked="{Binding Inverted}" IsVisible="{Binding IsAxis}" ToolTip.Tip="Invert">
+				<PathIcon Width="18" IsHitTestVisible="False" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Data="m -0,6 v -3 H 7 v -2 h -7 v -3 l -4,4 z m 10,6 4,-4 -4,-4 v 3 h -7 v 2 h 7 z"/>
+			</ToggleButton>
+			<Label Margin="20,0,0,0">Saturaion</Label>
+			<NumericUpDown Width="140" Value="{Binding Saturation}" Minimum="0" Maximum=".25" Increment="0.01" FormatString="P2"></NumericUpDown>
+			<Label Margin="20,0,0,0">Dead zone</Label>
+			<NumericUpDown Width="140" Value="{Binding DeadZone}" Minimum="0" Maximum=".25" Increment="0.01" FormatString="P2"></NumericUpDown>
+			<Label Margin="20,0,0,0" Content="{Binding OutputValue}"/>
+			<Label Margin="20,0,0,0" Content="{Binding InputValue}"/>
+		</StackPanel>
+
+		<ProgressBar Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="5" Margin="0,7" Height="8" Value="{Binding RawInputValue}" Minimum="{Binding MinValue}" Maximum="{Binding MaxValue}"/>
+		<Slider Grid.Row="2" Grid.Column="1" Minimum="0" Maximum=".25" Margin="-3,0" Value="{Binding Saturation}"/>
+		<Slider Grid.Row="2" Grid.Column="4" Minimum="0" Maximum="1" Margin="-3,0" Value="{Binding DeadZone}" IsEnabled="False"/>
+		<Slider Grid.Row="2" Grid.Column="3" Minimum="0" Maximum=".25" Margin="-3,0" Value="{Binding DeadZone}" IsDirectionReversed="True"/>
+		<Slider Grid.Row="2" Grid.Column="4" Minimum="0" Maximum="1" Margin="-3,0" Value="{Binding Saturation}" IsDirectionReversed="True" IsEnabled="False"/>
+	</Grid>
+</UserControl>

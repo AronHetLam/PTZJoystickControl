@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="using:PtzJoystickControl.Gui.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="PtzJoystickControl.Gui.Views.InputCommandView">
+	<Grid ColumnDefinitions="170,3,25,*" RowDefinitions="25">
+		<ComboBox Items="{Binding Commands}" SelectedItem="{Binding SelectedCommand}" Grid.Column="0" HorizontalAlignment="Stretch">
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding CommandName}"/>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+
+		<Button Grid.Column="2" Command="{Binding ClearCommand}" IsEnabled="{Binding IsCleared}" ToolTip.Tip="Clear Command" HorizontalAlignment="Left" Width="16" VerticalAlignment="Stretch" Padding="0">
+			<Button.Styles>
+				<Style Selector="Button:pointerover">
+					<Setter Property="Foreground" Value="IndianRed"/>
+				</Style>
+			</Button.Styles>
+			<Path Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0 1 L1 0 L4 3 L7 0 L8 1 L5 4 L8 7 L7 8 L4 5 L1 8 L 0 7 L3 4Z"/>
+		</Button>
+
+		<ContentControl x:Name="CommandParamContentControl" Grid.Column="3" Content="{Binding}">
+			<ContentControl.ContentTemplate>
+				<local:CommandPropsTemplateSelector>
+					<DataTemplate x:Key="AxisWithDynamicCommand">
+						<Grid ColumnDefinitions="110,3,140,15,70,3,140,*">
+							<TextBlock Text="{Binding SelectedCommand.AxisParameterName}" Grid.Column="0" VerticalAlignment="Center"/>
+							<ComboBox Items="{Binding Values}" SelectedItem="{Binding CommandValue}" Grid.Column="2" HorizontalAlignment="Stretch">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Name}"></TextBlock>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+						</Grid>
+					</DataTemplate>
+					<DataTemplate x:Key="AxisWithStaticCommand">
+						<Grid ColumnDefinitions="110,3,140,15,70,3,140,*">
+							<TextBlock Text="Trigger direction" Grid.Column="0" VerticalAlignment="Center"/>
+							<ComboBox Items="{Binding Directions}" SelectedItem="{Binding CommandDirection}" Grid.Column="2" HorizontalAlignment="Stretch" IsEnabled="{Binding !DisableDirection}">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Name}"></TextBlock>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+							<TextBlock Text="{Binding SelectedCommand.AxisParameterName}" Grid.Column="4" TextAlignment="Right" VerticalAlignment="Center"/>
+							<ComboBox Items="{Binding Values}" SelectedItem="{Binding CommandValue}" Grid.Column="6" HorizontalAlignment="Stretch">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Name}"></TextBlock>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+						</Grid>
+					</DataTemplate>
+
+					<DataTemplate x:Key="ButtonWithDynamicCommand">
+						<Grid ColumnDefinitions="110,3,140,15,70,3,140,*">
+							<TextBlock Text="Direction" Grid.Column="0"
+										VerticalAlignment="Center"/>
+							<ComboBox Items="{Binding Directions}" SelectedItem="{Binding CommandDirection}" Grid.Column="2" HorizontalAlignment="Stretch" IsEnabled="{Binding !DisableDirection}">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Name}"></TextBlock>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+							<TextBlock Text="{Binding SelectedCommand.ButtonParameterName}" Grid.Column="4" TextAlignment="Right" VerticalAlignment="Center"/>
+							<ComboBox Items="{Binding Values}" SelectedItem="{Binding CommandValue}" Grid.Column="6" HorizontalAlignment="Stretch">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Name}"></TextBlock>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+						</Grid>
+					</DataTemplate>
+
+					<DataTemplate x:Key="ButtonWithStaticCommand">
+						<Grid ColumnDefinitions="110,3,140,15,70,3,140,*">
+							<TextBlock Text="{Binding SelectedCommand.ButtonParameterName}" Grid.Column="0" VerticalAlignment="Center"/>
+							<ComboBox Items="{Binding Values}" SelectedItem="{Binding CommandValue}" Grid.Column="2" HorizontalAlignment="Stretch">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Name}"></TextBlock>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+						</Grid>
+					</DataTemplate>
+
+					<DataTemplate x:Key="NoCommandSelected">
+						<Grid>
+							<TextBlock Text="Select a command" VerticalAlignment="Center"/>
+						</Grid>
+					</DataTemplate>
+				</local:CommandPropsTemplateSelector>
+			</ContentControl.ContentTemplate>
+		</ContentControl>
+	</Grid>
+</UserControl>

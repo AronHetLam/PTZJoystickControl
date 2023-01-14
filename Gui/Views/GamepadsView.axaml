@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:PtzJoystickControl.Gui.ViewModels"
+             xmlns:v="using:PtzJoystickControl.Gui.Views"
+             mc:Ignorable="d" d:DesignWidth="550" d:DesignHeight="450"
+             x:Class="PtzJoystickControl.Gui.Views.GamepadsView">
+	<Grid RowDefinitions="Auto, *" ColumnDefinitions="*,Auto">
+		<ComboBox Grid.Row="0" Items="{Binding AvailableGamepads}" SelectedItem="{Binding SelectedGamepadInfo}" Margin="10,10,10,0" HorizontalAlignment="Stretch">
+			<ComboBox.Styles>
+				<Style Selector="ComboBoxItem">
+					<Setter
+						Property="IsEnabled"
+						Value="{Binding IsConnected}" />
+				</Style>
+			</ComboBox.Styles>
+			<ComboBox.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="{Binding Name}"/>
+						<TextBlock Text=" (Disconnected)" IsVisible="{Binding !IsConnected}"/>
+						<!--<ToggleSwitch IsEnabled="True" IsChecked="{Binding IsActivated}" OnContent="" OffContent=""></ToggleSwitch>-->
+					</StackPanel>
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
+		<ToggleSwitch Name="showAxisSettings" Grid.Row="0" Grid.Column="1" Margin="10,5,10,-5" VerticalAlignment="Center" OnContent="Advanced" OffContent="Advanced"/>
+
+		<ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Visible" Margin="10">
+			<ItemsControl Items="{Binding InputViewModels}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="{x:Type vm:InputViewModel}">
+						<StackPanel Orientation="Vertical">
+							<v:InputView />
+							<Panel IsVisible="{Binding IsAxis}">
+								<v:AxisSettingsView DataContext="{Binding}" IsVisible="{Binding #showAxisSettings.IsChecked}" Margin="2"/>
+							</Panel>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PtzJoystickControl.Gui.ViewModels"
+        xmlns:v="using:PtzJoystickControl.Gui.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="450"
+        x:Class="PtzJoystickControl.Gui.Views.MainWindow"
+		TransparencyLevelHint="AcrylicBlur"
+		ExtendClientAreaToDecorationsHint="True"
+		Background="Transparent"
+        Title="PTZ Joystick Control"
+		Icon="/Assets/icon.ico">
+
+	<Grid RowDefinitions="Auto,*">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="4*" MinWidth="550"/>
+			<ColumnDefinition Width="3*" MinWidth="420"/>
+		</Grid.ColumnDefinitions>
+		
+		<ExperimentalAcrylicBorder IsVisible="{Binding AcrylicEnabled}" IsHitTestVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="2">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="black" TintOpacity="0.75" MaterialOpacity=".65" />
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		<Border IsVisible="{Binding !AcrylicEnabled}" Background="#3a3a3a" IsHitTestVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+		
+		<StackPanel IsVisible="{Binding IsExtendedIntoWindowDecorations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Height="30" Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="{Binding TitleHorizontalAlignment}">
+			<Image Source="/Assets/icon.ico" Height="22" HorizontalAlignment="Left" Margin="4"/>
+			<TextBlock Text="PTZ Joystick Control" VerticalAlignment="Center"/>
+		</StackPanel>
+		
+		<v:GamepadsView Grid.Column="0" Grid.Row="1" DataContext="{Binding GamepadsViewModel}"/>
+		<GridSplitter Grid.Column="0" Grid.Row="1" Width="6" HorizontalAlignment="Right" Margin="0,10,-3,10"/>
+		<v:CamerasView Grid.Column="1" Grid.Row="1" DataContext="{Binding CamerasViewModel}"/>
+	</Grid>
+
+</Window>

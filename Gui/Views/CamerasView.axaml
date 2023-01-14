@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:v="using:PtzJoystickControl.Gui.Views"
+			 xmlns:devices="clr-namespace:PtzJoystickControl.Core.Devices;assembly=Core"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+             x:Class="PtzJoystickControl.Gui.Views.CamerasView">
+
+	<UserControl.Resources>
+		<v:CameraToCameraViewConverter x:Key="CameraToCameraViewConverter"/>
+	</UserControl.Resources>
+
+	<Grid RowDefinitions="*,Auto">
+		<ListBox Items="{Binding Cameras}" SelectedItem="{Binding SelectedCamera}" Background="#0000" Padding="10">
+
+			<ListBox.Styles>
+				<Style Selector="ListBoxItem">
+					<Setter Property="Background" Value="#4000"/>
+					<Setter Property="Margin" Value="0,0,10,5"/>
+					<Setter Property="Padding" Value="5,3"/>
+					<Setter Property="CornerRadius" Value="10"/>
+				</Style>
+			</ListBox.Styles>
+					
+			<ListBox.DataTemplates>
+				<DataTemplate DataType="{x:Type devices:ViscaIPDeviceBase}">
+					<v:IPCameraView DataContext="{Binding, Converter={StaticResource CameraToCameraViewConverter}}"/>
+				</DataTemplate>
+				<DataTemplate DataType="{x:Type devices:ViscaDeviceBase}">
+					<TextBlock Text="Unsupported visca device"/>
+				</DataTemplate>
+			</ListBox.DataTemplates>
+		</ListBox>
+		<Button Grid.Row="1" Content="Add" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Bottom" Width="75" Command="{Binding AddCamera}"/>
+	</Grid>
+</UserControl>
+

@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:v="clr-namespace:PtzJoystickControl.Gui.Views;assembly=Gui"
+			 xmlns:devices="clr-namespace:PtzJoystickControl.Core.Devices;assembly=Core"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="100"
+             x:Class="PtzJoystickControl.Gui.Views.IPCameraView">
+
+	<UserControl.Resources>
+		<v:CameraViewToCameraConverter x:Key="CameraViewToCameraConverter"/>
+	</UserControl.Resources>
+	
+	<Grid RowDefinitions="Auto,Auto" ColumnDefinitions="100,3,100,3,65,3,70,3,50,0,50,3,95,3,Auto">
+		<Grid.Styles>
+			<Style Selector="Label">
+				<Setter Property="FontSize" Value="11"/>
+			</Style>
+			<Style Selector="ComboBox, TextBox">
+				<Setter Property="VerticalAlignment" Value="Center"/>
+			</Style>
+		</Grid.Styles>
+		<!--<DataGridTeTxtColumn IsReadOnly="rue" Header="#" Binding="{Binding AlternationIndex, RelativeSource={RelativeSource AncestorType=DataGridRow}}"  />-->
+		<Label		Grid.Column="0"  Grid.Row="0">Name</Label>
+		<TextBox	Grid.Column="0"  Grid.Row="1" Text="{Binding Name}"/>
+		<Label		Grid.Column="2"  Grid.Row="0">IP Address</Label>
+		<TextBox	Grid.Column="2"  Grid.Row="1" Text="{Binding IPAddress}"/>
+		<Label		Grid.Column="4"  Grid.Row="0">Port</Label>
+		<TextBox	Grid.Column="4"  Grid.Row="1" Text="{Binding Port}"/>
+		<Label		Grid.Column="6"  Grid.Row="0">Protocol</Label>
+		<ComboBox	Grid.Column="6"  Grid.Row="1" Items="{Binding Protocols}" SelectedItem="{Binding Protocol}" HorizontalAlignment="Stretch"/>
+		<Label		Grid.Column="8"  Grid.Row="0">Header</Label>
+		<CheckBox	Grid.Column="8"  Grid.Row="1" IsChecked="{Binding UseHeader}" HorizontalAlignment="Center"/>
+		<Label		Grid.Column="10" Grid.Row="0">Interval</Label>
+		<TextBox	Grid.Column="10" Grid.Row="1" Text="{Binding SendWaitTime}" MinWidth ="0"/>
+		<Label		Grid.Column="12" Grid.Row="0">Status</Label>
+		<ContentControl Grid.Column="12" Grid.Row="1" Content="{Binding Connected}">
+			<ContentControl.Styles>
+				<Style Selector="TextBlock">
+					<Setter Property="VerticalAlignment" Value="Center"/>
+				</Style>
+			</ContentControl.Styles>
+
+			<ContentControl.DataTemplates>
+				<v:CameraStatusTemplateSelector>
+					<DataTemplate x:Key="true" DataType="x:Boolean">
+						<TextBlock Foreground="lightgreen">Connected</TextBlock>
+					</DataTemplate>
+					<DataTemplate x:Key="false" DataType="x:Boolean">
+						<TextBlock Foreground="#FFFF9090">Disconnected</TextBlock>
+					</DataTemplate>
+				</v:CameraStatusTemplateSelector>
+			</ContentControl.DataTemplates>
+		</ContentControl>
+		<Button Grid.Column="14" Grid.Row="0" Grid.RowSpan="2" Background="#3000" Command="{Binding $parent[3].DataContext.RemoveCamera}" CommandParameter="{Binding Converter={StaticResource CameraViewToCameraConverter}}" ToolTip.Tip="Remove Camera">
+			<Button.Styles>
+				<Style Selector="Button:pointerover">
+					<Setter Property="Foreground" Value="red"/>
+				</Style>
+			</Button.Styles>
+			<PathIcon Height="26" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" Data="M39.27,58.64a4.74,4.74,0,1,1,9.47,0V93.72a4.74,4.74,0,1,1-9.47,0V58.64Zm63.6-19.86L98,103a22.29,22.29,0,0,1-6.33,14.1,19.41,19.41,0,0,1-13.88,5.78h-45a19.4,19.4,0,0,1-13.86-5.78l0,0A22.31,22.31,0,0,1,12.59,103L7.74,38.78H0V25c0-3.32,1.63-4.58,4.84-4.58H27.58V10.79A10.82,10.82,0,0,1,38.37,0H72.24A10.82,10.82,0,0,1,83,10.79v9.62h23.35a6.19,6.19,0,0,1,1,.06A3.86,3.86,0,0,1,110.59,24c0,.2,0,.38,0,.57V38.78Zm-9.5.17H17.24L22,102.3a12.82,12.82,0,0,0,3.57,8.1l0,0a10,10,0,0,0,7.19,3h45a10.06,10.06,0,0,0,7.19-3,12.8,12.8,0,0,0,3.59-8.1L93.37,39ZM71,20.41V12.05H39.64v8.36ZM61.87,58.64a4.74,4.74,0,1,1,9.47,0V93.72a4.74,4.74,0,1,1-9.47,0V58.64Z"/>
+		</Button>
+	</Grid>
+</UserControl>
