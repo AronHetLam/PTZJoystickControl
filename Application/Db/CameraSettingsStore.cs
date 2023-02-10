@@ -45,6 +45,7 @@ namespace PtzJoystickControl.Application.Db
                             viscaIPDevice.Port = viscaDeviceSettings.Port;
                             viscaIPDevice.Protocol = viscaDeviceSettings.Protocol;
                             viscaIPDevice.SendWaitTime = viscaDeviceSettings.SendWaitTime;
+                            viscaIPDevice.UseHeader = viscaDeviceSettings.UseHeader;
                         }
                         return viscaDevice;
                     })
