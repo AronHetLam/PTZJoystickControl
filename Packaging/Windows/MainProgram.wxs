@@ -299,11 +299,11 @@
 			<Component>
 				<File Name="Microsoft.Win32.SystemEvents.dll"/>
 			</Component>
-			<?if $(sys.BUILDARCH) = "x64"?>
+			<!--<?if $(sys.BUILDARCH) = "x64"?>
 			<Component>
 				<File Name="mscordaccore_amd64_amd64_6.0.1523.11507.dll"/>
 			</Component>
-			<?endif?>
+			<?endif?>-->
 			<Component>
 				<File Name="mscordaccore.dll"/>
 			</Component>
