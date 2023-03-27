@@ -84,7 +84,7 @@ jobs:
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Publish application
-      run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Arch --sc
+      run: dotnet publish Gui/Gui.csproj -c PublishRelease -r win7-{$env:Arch} --sc
       env:
         Arch: ${{ matrix.arch }}
 
