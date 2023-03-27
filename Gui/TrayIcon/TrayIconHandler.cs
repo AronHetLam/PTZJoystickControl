@@ -7,18 +7,22 @@ using Avalonia.Platform;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Controls;
+using System.Reflection;
 
 namespace PtzJoystickControl.Gui.TrayIcon
 {
     internal class TrayIconHandler
     {
         private readonly IAssetLoader _assetLoader;
+        private readonly string _assemblyName;
         private Avalonia.Controls.TrayIcon _trayIcon;
 
         public TrayIconHandler(IAssetLoader assetLoader)
         {
             _assetLoader = assetLoader ?? throw new ArgumentNullException(nameof(assetLoader));
-            
+            var t = Assembly.GetExecutingAssembly();
+            _assemblyName = t.GetName().Name;
+
             // Initialize Tray Icon
             _trayIcon = new Avalonia.Controls.TrayIcon()
             {
@@ -42,7 +46,7 @@ namespace PtzJoystickControl.Gui.TrayIcon
 
             for (int i = 0; i < sizes.Length; i++)
             {
-                Bitmap bitmap = new(assets.Open(new Uri($"avares://Gui/Assets/bg_{sizes[i]}.png")));
+                Bitmap bitmap = new(assets.Open(new Uri($"avares://{_assemblyName}/Assets/bg_{sizes[i]}.png")));
 
                 using var rtbb = new RenderTargetBitmap(new PixelSize(sizes[i], sizes[i]));
                 using var ctx = rtbb.CreateDrawingContext(null);

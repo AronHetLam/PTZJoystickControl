@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PtzJoystickControl.Gui.ViewModels"
+        xmlns:v="using:PtzJoystickControl.Gui.Views"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		Height="120"
+		Width="400"
+		CanResize="False"
+		SystemDecorations="None"
+        WindowStartupLocation="CenterScreen"
+		x:Class="PtzJoystickControl.Gui.Views.InstanceRunningWindow"
+		TransparencyLevelHint="AcrylicBlur"
+		ExtendClientAreaToDecorationsHint="True"	
+		Background="Transparent"
+        Title="PTZ Joystick Control"
+		Icon="/Assets/icon.ico">
+
+	<Grid RowDefinitions="Auto,*" Background="Transparent">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		
+		<ExperimentalAcrylicBorder CornerRadius="13" IsVisible="{Binding AcrylicEnabled}" IsHitTestVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="2">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="black" TintOpacity="0.75" MaterialOpacity=".65" />
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		<Border CornerRadius="13" IsVisible="{Binding !AcrylicEnabled}" Background="#3a3a3a" IsHitTestVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+		
+		<StackPanel IsVisible="{Binding IsExtendedIntoWindowDecorations, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}" Height="30" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="{Binding TitleHorizontalAlignment}">
+			<Image Source="/Assets/icon.ico" Height="22" HorizontalAlignment="Left" Margin="4"/>
+			<TextBlock Text="PTZ Joystick Control" VerticalAlignment="Center"/>
+		</StackPanel>
+
+		<Label Grid.Row="1" VerticalAlignment="Center" Margin="5">PTZ Joystick Control is already running.</Label>
+		<Button Command="{Binding Close}" IsEnabled="True" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5">OK</Button>
+	</Grid>
+
+</Window>

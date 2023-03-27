@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Platform;
 using Avalonia.ReactiveUI;
-using Avalonia.Controls.ApplicationLifetimes;
 using PtzJoystickControl.Gui.ViewModels;
 using PtzJoystickControl.Gui.TrayIcon;
 using PtzJoystickControl.Application.Db;
@@ -14,7 +13,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
+using System.Threading;
 
 namespace PtzJoystickControl.Gui;
 
@@ -36,9 +35,26 @@ internal class Program
         //Trace.Listeners.Add(new TextWriterTraceListener(f));
         Debug.AutoFlush = true;
 
-        RegisterServices();
+        var appBuilder = BuildAvaloniaApp();
 
-        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
+        // Mutex to ensure only one instance will 
+        var mutex = new Mutex(false, "PTZJoystickControlMutex/BFD0A32E-F433-49E7-AB74-B49FC95012D0");
+        try
+        {
+            if (!mutex.WaitOne(0, false)) {
+            appBuilder.StartWithClassicDesktopLifetime(new string[] { "-r" }, Avalonia.Controls.ShutdownMode.OnMainWindowClose);
+                //; // TODO: App with modal to say that itø's already running...
+                return;
+            }
+            
+            RegisterServices();
+
+            appBuilder.StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
+        }
+        finally
+        {
+            mutex?.Close();
+        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -88,12 +104,4 @@ internal static class ResolverExtension
         return resolver.GetService<T>()
             ?? throw new Exception("Resolved dependency cannot be null");
     }
-}
-
-
-
-
-
-internal class Test: IApplicationLifetime {
-
 }
