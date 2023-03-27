@@ -101,7 +101,7 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create msi package
-      run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -r $env:Arch -p:OutputName=$env:OutputName #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -r $env:Runtime -p:OutputName=$env:OutputName #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Runtime: ${{ format('win7-{0}', matrix.arch) }}
         OutputName: ${{ format('PTZJoystickControl_{0}_{1}', env.VERSION, matrix.arch) }}
