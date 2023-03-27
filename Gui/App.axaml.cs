@@ -23,6 +23,11 @@ namespace PtzJoystickControl.Gui
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                if (desktop.Args.Contains("-r"))
+                {
+                    desktop.MainWindow = new InstanceRunningWindow();
+                    return;
+                }
                 var camerasViewModel = Locator.Current.GetServiceOrThrow<CamerasViewModel>();
 
                 var mainWindow = new MainWindow();

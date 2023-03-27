@@ -1,0 +1,840 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Fragment>
+		<?if $(sys.BUILDARCH) = "x64"?>
+		<?define BasePath="../../Gui/bin/PublishRelease/net6.0/win7-x64/publish/"?>
+		<?elseif $(sys.BUILDARCH) = "x86"?>
+		<?define BasePath="../../Gui/bin/PublishRelease/net6.0/win7-x86/publish/"?>
+		<?endif?>
+		<ComponentGroup Id="MainProgram" Directory="INSTALLFOLDER" Source="$(BasePath)">
+			<Component>
+				<File Name="api-ms-win-core-console-l1-1-0.dll" />
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-console-l1-2-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-datetime-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-debug-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-errorhandling-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-fibers-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-file-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-file-l1-2-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-file-l2-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-handle-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-heap-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-interlocked-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-libraryloader-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-localization-l1-2-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-memory-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-namedpipe-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-processenvironment-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-processthreads-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-processthreads-l1-1-1.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-profile-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-rtlsupport-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-string-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-synch-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-synch-l1-2-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-sysinfo-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-timezone-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-core-util-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-conio-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-convert-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-environment-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-filesystem-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-heap-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-locale-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-math-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-multibyte-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-private-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-process-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-runtime-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-stdio-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-string-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-time-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="api-ms-win-crt-utility-l1-1-0.dll"/>
+			</Component>
+			<Component>
+				<File Name="Application.dll"/>
+			</Component>
+			<Component>
+				<File Name="Application.pdb"/>
+			</Component>
+			<Component>
+				<File Name="av_libglesv2.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Animation.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Base.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Controls.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.DesignerSupport.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Desktop.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.DesktopRuntime.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Dialogs.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.FreeDesktop.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Input.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Interactivity.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Layout.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Markup.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Markup.Xaml.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.MicroCom.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Native.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.OpenGL.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.ReactiveUI.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Remote.Protocol.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Skia.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Styling.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Themes.Default.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Themes.Fluent.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Visuals.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.Win32.dll"/>
+			</Component>
+			<Component>
+				<File Name="Avalonia.X11.dll"/>
+			</Component>
+			<Component>
+				<File Name="clretwrc.dll"/>
+			</Component>
+			<Component>
+				<File Name="clrjit.dll"/>
+			</Component>
+			<Component>
+				<File Name="Core.dll"/>
+			</Component>
+			<Component>
+				<File Name="Core.pdb"/>
+			</Component>
+			<Component>
+				<File Name="coreclr.dll"/>
+			</Component>
+			<Component>
+				<File Name="createdump.exe"/>
+			</Component>
+			<Component>
+				<File Name="dbgshim.dll"/>
+			</Component>
+			<Component>
+				<File Name="DynamicData.dll"/>
+			</Component>
+			<Component>
+				<File Name="Gui.deps.json"/>
+			</Component>
+			<Component>
+				<File Name="Gui.dll"/>
+			</Component>
+			<Component>
+				<File Name="Gui.exe" Id="MainExe" />
+			</Component>
+			<Component>
+				<File Name="Gui.pdb"/>
+			</Component>
+			<Component>
+				<File Name="Gui.runtimeconfig.json"/>
+			</Component>
+			<Component>
+				<File Name="HarfBuzzSharp.dll"/>
+			</Component>
+			<Component>
+				<File Name="hostfxr.dll"/>
+			</Component>
+			<Component>
+				<File Name="hostpolicy.dll"/>
+			</Component>
+			<Component>
+				<File Name="JetBrains.Annotations.dll"/>
+			</Component>
+			<Component>
+				<File Name="libHarfBuzzSharp.dll"/>
+			</Component>
+			<Component>
+				<File Name="libSkiaSharp.dll"/>
+			</Component>
+			<Component>
+				<File Name="Microsoft.CSharp.dll"/>
+			</Component>
+			<?if $(sys.BUILDARCH) = "x64"?>
+			<Component>
+				<File Name="Microsoft.DiaSymReader.Native.amd64.dll"/>
+			</Component>
+			<?endif?>
+			<Component>
+				<File Name="Microsoft.VisualBasic.Core.dll"/>
+			</Component>
+			<Component>
+				<File Name="Microsoft.VisualBasic.dll"/>
+			</Component>
+			<Component>
+				<File Name="Microsoft.Win32.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="Microsoft.Win32.Registry.dll"/>
+			</Component>
+			<Component>
+				<File Name="Microsoft.Win32.SystemEvents.dll"/>
+			</Component>
+			<!--<?if $(sys.BUILDARCH) = "x64"?>
+			<Component>
+				<File Name="mscordaccore_amd64_amd64_6.0.1523.11507.dll"/>
+			</Component>
+			<?endif?>-->
+			<Component>
+				<File Name="mscordaccore.dll"/>
+			</Component>
+			<Component>
+				<File Name="mscordbi.dll"/>
+			</Component>
+			<Component>
+				<File Name="mscorlib.dll"/>
+			</Component>
+			<Component>
+				<File Name="mscorrc.dll"/>
+			</Component>
+			<Component>
+				<File Name="msquic.dll"/>
+			</Component>
+			<Component>
+				<File Name="netstandard.dll"/>
+			</Component>
+			<Component>
+				<File Name="ReactiveUI.dll"/>
+			</Component>
+			<Component>
+				<File Name="SDL2-CS.dll"/>
+			</Component>
+			<Component>
+				<File Name="SDL2.dll"/>
+			</Component>
+			<Component>
+				<File Name="SdlGamepads.dll"/>
+			</Component>
+			<Component>
+				<File Name="SdlGamepads.dll.config"/>
+			</Component>
+			<Component>
+				<File Name="SdlGamepads.pdb"/>
+			</Component>
+			<Component>
+				<File Name="SkiaSharp.dll"/>
+			</Component>
+			<Component>
+				<File Name="Splat.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.AppContext.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Buffers.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Collections.Concurrent.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Collections.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Collections.Immutable.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Collections.NonGeneric.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Collections.Specialized.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ComponentModel.Annotations.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ComponentModel.DataAnnotations.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ComponentModel.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ComponentModel.EventBasedAsync.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ComponentModel.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ComponentModel.TypeConverter.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Configuration.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Console.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Core.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Data.Common.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Data.DataSetExtensions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Data.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.Contracts.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.Debug.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.DiagnosticSource.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.FileVersionInfo.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.Process.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.StackTrace.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.TextWriterTraceListener.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.Tools.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.TraceSource.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Diagnostics.Tracing.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Drawing.Common.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Drawing.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Drawing.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Dynamic.Runtime.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Formats.Asn1.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Globalization.Calendars.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Globalization.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Globalization.Extensions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.Compression.Brotli.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.Compression.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.Compression.FileSystem.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.Compression.Native.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.Compression.ZipFile.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.FileSystem.AccessControl.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.FileSystem.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.FileSystem.DriveInfo.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.FileSystem.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.FileSystem.Watcher.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.IsolatedStorage.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.MemoryMappedFiles.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.Pipes.AccessControl.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.Pipes.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.IO.UnmanagedMemoryStream.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Linq.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Linq.Expressions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Linq.Parallel.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Linq.Queryable.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Memory.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Http.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Http.Json.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.HttpListener.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Mail.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.NameResolution.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.NetworkInformation.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Ping.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Quic.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Requests.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Security.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.ServicePoint.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.Sockets.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.WebClient.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.WebHeaderCollection.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.WebProxy.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.WebSockets.Client.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Net.WebSockets.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Numerics.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Numerics.Vectors.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ObjectModel.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Private.CoreLib.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Private.DataContractSerialization.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Private.Uri.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Private.Xml.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Private.Xml.Linq.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reactive.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.DispatchProxy.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.Emit.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.Emit.ILGeneration.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.Emit.Lightweight.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.Extensions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.Metadata.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Reflection.TypeExtensions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Resources.Reader.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Resources.ResourceManager.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Resources.Writer.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.CompilerServices.Unsafe.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.CompilerServices.VisualC.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Extensions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Handles.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.InteropServices.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.InteropServices.RuntimeInformation.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Intrinsics.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Loader.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Numerics.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Serialization.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Serialization.Formatters.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Serialization.Json.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Serialization.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Runtime.Serialization.Xml.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.AccessControl.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Claims.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Cryptography.Algorithms.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Cryptography.Cng.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Cryptography.Csp.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Cryptography.Encoding.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Cryptography.OpenSsl.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Cryptography.Primitives.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Cryptography.X509Certificates.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Principal.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.Principal.Windows.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Security.SecureString.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ServiceModel.Web.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ServiceProcess.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Text.Encoding.CodePages.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Text.Encoding.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Text.Encoding.Extensions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Text.Encodings.Web.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Text.Json.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Text.RegularExpressions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Channels.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Overlapped.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Tasks.Dataflow.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Tasks.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Tasks.Extensions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Tasks.Parallel.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Thread.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.ThreadPool.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Threading.Timer.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Transactions.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Transactions.Local.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.ValueTuple.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Web.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Web.HttpUtility.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Windows.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.Linq.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.ReaderWriter.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.Serialization.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.XDocument.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.XmlDocument.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.XmlSerializer.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.XPath.dll"/>
+			</Component>
+			<Component>
+				<File Name="System.Xml.XPath.XDocument.dll"/>
+			</Component>
+			<Component>
+				<File Name="Tmds.DBus.dll"/>
+			</Component>
+			<Component>
+				<File Name="ucrtbase.dll"/>
+			</Component>
+			<Component>
+				<File Name="WindowsBase.dll"/>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

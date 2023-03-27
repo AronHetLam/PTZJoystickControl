@@ -1,0 +1,33 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<?if $(sys.BUILDARCH) = "x64"?>
+	<?define UpgradeCode="6CB6A6F0-DF63-4F25-A986-8DB0925A9F21"?>
+	<?elseif $(sys.BUILDARCH) = "x86"?>
+	<?define UpgradeCode="6CB6A6F0-DF63-4F25-A986-8DB0925A9F21"?>
+	<?endif?>
+
+	<Package Name="PTZ Joystick Control" Manufacturer="AHL" Version="!(bind.FileVersion.MainExe)" UpgradeCode="$(var.UpgradeCode)">
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)"  />
+		<MediaTemplate EmbedCab="yes"/>
+		<Icon Id="icon.ico" SourceFile="../../Gui/Assets/icon.ico"/>
+		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+		<Feature Id="Main">
+			<ComponentGroupRef Id="MainProgram"/>
+			<ComponentRef Id="StartShortcut"/>
+			<ComponentRef Id="DesktopShortcut"/>
+		</Feature>
+
+		<StandardDirectory Id="DesktopFolder">
+			<Component Id="DesktopShortcut" Guid="C69EA429-5208-4E3D-9588-290C7C480425">
+				<Shortcut Name="!(bind.Property.ProductName)" Target="[#MainExe]" Directory="DesktopFolder" WorkingDirectory="INSTALLFOLDER"/>
+				<RegistryValue Root="HKCU" Key="Software\!(bind.Property.Manufacturer)\!(bind.Property.ProductName)" Name="desktopShortcut" Type="integer" Value="1" KeyPath="yes"/>
+			</Component>
+		</StandardDirectory>
+
+		<Component Directory="AppProgramMenuFolder" Id="StartShortcut" Guid="B69EA429-5208-4E3D-9588-290C7C480425">
+			<Shortcut Name="!(bind.Property.ProductName)" Target="[#MainExe]" WorkingDirectory="INSTALLFOLDER"/>
+			<RemoveFolder Id="CleanShortcut" Directory="AppProgramMenuFolder" On="uninstall"/>
+			<RegistryValue Root="HKCU" Key="Software\!(bind.Property.Manufacturer)\!(bind.Property.ProductName)" Name="programMenuShortcut" Type="integer" Value="1" KeyPath="yes"/>
+		</Component>
+	</Package>
+</Wix>
