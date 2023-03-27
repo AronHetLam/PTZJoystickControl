@@ -103,7 +103,7 @@ jobs:
     - name: Create msi package
       run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -p:OutputName=$env:OutputName -p:platform=$env:Arch #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        Arch: ${{ format('win7-{0}', matrix.arch) }}
+        Arch: ${{ matrix.arch }}
         OutputName: ${{ format('PTZJoystickControl_{0}_{1}', env.VERSION, matrix.arch) }}
 
     ## Remove the pfx
