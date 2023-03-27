@@ -86,7 +86,7 @@ jobs:
     - name: Publish application
       run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Runtime --sc
       env:
-        Runtime: ${{ 'win7-' + matrix.arch }}
+        Runtime: ${{ format('win7-{0}', matrix.arch) }}
 
     - name: Get version
       run: echo "VERSION=(select-string '<Version>(.*)</Version>' .\Gui.csproj).matches.groups[1].value" >> $GITHUB_ENV
@@ -103,8 +103,8 @@ jobs:
     - name: Create msi package
       run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -r $env:Arch -p:OutputName=$env:OutputName #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        Runtime: ${{ 'win7-' + matrix.arch }}
-        OutputName: ${{ 'PTZJoystickControl_' + $VERSION + '_' + matrix.arch }}
+        Runtime: ${{ format('win7-{0}', matrix.arch) }}
+        OutputName: ${{ format('PTZJoystickControl_{0}_{1}', $VERSION, matrix.arch }}
 
     ## Remove the pfx
     #- name: Remove the pfx
