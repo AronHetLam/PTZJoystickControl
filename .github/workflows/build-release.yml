@@ -104,7 +104,7 @@ jobs:
       run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -r $env:Arch -p:OutputName=$env:OutputName #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Runtime: ${{ format('win7-{0}', matrix.arch) }}
-        OutputName: ${{ format('PTZJoystickControl_{0}_{1}', env.VERSION, matrix.arch }}
+        OutputName: ${{ format('PTZJoystickControl_{0}_{1}', env.VERSION, matrix.arch) }}
 
     ## Remove the pfx
     #- name: Remove the pfx
