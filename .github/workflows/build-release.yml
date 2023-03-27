@@ -84,9 +84,9 @@ jobs:
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Publish application
-      run: dotnet publish Gui/Gui.csproj -c PublishRelease -r win7-{$env:Arch} --sc
+      run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Runtime --sc
       env:
-        Arch: ${{ matrix.arch }}
+        Runtime: ${{ 'win7-' + matrix.arch }}
 
     - name: Get version
       run: echo "VERSION=(select-string '<Version>(.*)</Version>' .\Gui.csproj).matches.groups[1].value" >> $GITHUB_ENV
@@ -101,9 +101,10 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create msi package
-      run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -r $env:Arch -p:OutputName=PTZJoystickControl_{$VERSION}_{$env:Arch} #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -r $env:Arch -p:OutputName=$env:OutputName #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
-        Arch: ${{ matrix.arch }}
+        Runtime: ${{ 'win7-' + matrix.arch }}
+        OutputName: ${{ 'PTZJoystickControl_' + $VERSION + '_' + matrix.arch }}
 
     ## Remove the pfx
     #- name: Remove the pfx
