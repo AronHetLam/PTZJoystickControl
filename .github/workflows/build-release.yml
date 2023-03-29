@@ -89,7 +89,10 @@ jobs:
         Runtime: ${{ format('win7-{0}', matrix.arch) }}
 
     - name: Get version
-      run: echo "VERSION=(select-string '<Version>(.*)</Version>' Gui\Gui.csproj).matches.groups[1].value" >> $GITHUB_ENV
+      run: |
+        $version = (select-string '<Version>(.*)</Version>' Gui\Gui.csproj).matches.groups[1].value
+        echo "Version: ${version}"
+        echo "VERSION=$version" >> $env:GITHUB_ENV
       
 
     ## Decode the base 64 encoded pfx and save the Signing_Certificate
