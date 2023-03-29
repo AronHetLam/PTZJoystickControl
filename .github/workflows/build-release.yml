@@ -116,4 +116,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: MSIX Package
-        path: Packaging/Windows/bin/**.msi
+        path: Packaging/Windows/bin/**/*.msi
