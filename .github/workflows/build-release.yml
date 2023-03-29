@@ -89,7 +89,7 @@ jobs:
         Runtime: ${{ format('win7-{0}', matrix.arch) }}
 
     - name: Get version
-      run: echo "VERSION=(select-string '<Version>(.*)</Version>' .Gui\Gui.csproj).matches.groups[1].value" >> $GITHUB_ENV
+      run: echo "VERSION=(select-string '<Version>(.*)</Version>' Gui\Gui.csproj).matches.groups[1].value" >> $GITHUB_ENV
       
 
     ## Decode the base 64 encoded pfx and save the Signing_Certificate
@@ -116,4 +116,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: MSIX Packages
-        path: Packaging/Windows/**/*.msi
+        path: Packaging/Windows/Packages/**/*.msi
