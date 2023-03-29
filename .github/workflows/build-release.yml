@@ -89,7 +89,7 @@ jobs:
         Runtime: ${{ format('win7-{0}', matrix.arch) }}
 
     - name: Get version
-      run: echo "VERSION=(select-string '<Version>(.*)</Version>' .\Gui.csproj).matches.groups[1].value" >> $GITHUB_ENV
+      run: echo "VERSION=(select-string '<Version>(.*)</Version>' .Gui\Gui.csproj).matches.groups[1].value" >> $GITHUB_ENV
       
 
     ## Decode the base 64 encoded pfx and save the Signing_Certificate
@@ -101,7 +101,7 @@ jobs:
 
     # Create the app package by building and packaging the Windows Application Packaging project
     - name: Create msi package
-      run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -p:OutputName=$env:OutputName -p:platform=$env:Arch #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -p:OutputName=$env:OutputName -o Packaging/Windows/Packages -p:platform=$env:Arch #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Arch: ${{ matrix.arch }}
         OutputName: ${{ format('PTZJoystickControl_{0}_{1}', env.VERSION, matrix.arch) }}
@@ -110,10 +110,10 @@ jobs:
     #- name: Remove the pfx
     #  run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
 
-    # Upload the MSIX package: https://github.com/marketplace/actions/upload-a-build-artifact
+    # Upload the MSIX packages: https://github.com/marketplace/actions/upload-a-build-artifact
     - name: Upload build artifacts
       if: ${{ github.event_name == 'push' }}
       uses: actions/upload-artifact@v3
       with:
-        name: MSIX Package
-        path: Packaging/Windows/bin/**/*.msi
+        name: MSIX Packages
+        path: Packaging/Windows/**/*.msi
