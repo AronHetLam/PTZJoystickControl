@@ -14,6 +14,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Octokit;
+using System.Reflection;
 
 namespace PtzJoystickControl.Gui;
 
@@ -41,12 +43,12 @@ internal class Program
         var mutex = new Mutex(false, "PTZJoystickControlMutex/BFD0A32E-F433-49E7-AB74-B49FC95012D0");
         try
         {
-            if (!mutex.WaitOne(0, false)) {
-            appBuilder.StartWithClassicDesktopLifetime(new string[] { "-r" }, Avalonia.Controls.ShutdownMode.OnMainWindowClose);
-                //; // TODO: App with modal to say that itø's already running...
+            if (!mutex.WaitOne(0, false))
+            {
+                appBuilder.StartWithClassicDesktopLifetime(new string[] { "-r" }, Avalonia.Controls.ShutdownMode.OnMainWindowClose);
                 return;
             }
-            
+
             RegisterServices();
 
             appBuilder.StartWithClassicDesktopLifetime(args, Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
@@ -69,6 +71,13 @@ internal class Program
         var services = Locator.CurrentMutable;
         var resolver = Locator.Current;
         var avaloniaLocator = AvaloniaLocator.Current;
+
+        services.Register<IGitHubClient>(() => new GitHubClient(new ProductHeaderValue("PTZJoystickControl-UpdateChecker")));
+        services.Register<IUpdateService>(() => new UpdateService(
+            resolver.GetServiceOrThrow<IGitHubClient>(),
+            "AronHetLam",
+            "PTZJoystickControl",
+            Assembly.GetExecutingAssembly().GetName().Version!));
 
         services.RegisterConstant<ICameraSettingsStore>(new CameraSettingsStore());
         services.RegisterConstant<IGamepadSettingsStore>(new GamepadSettingsStore());
@@ -98,7 +107,7 @@ internal static class ResolverExtension
         return resolver.GetService<T>()
             ?? throw new Exception("Resolved dependency cannot be null");
     }
-  
+
     internal static T GetServiceOrThrow<T>(this IAvaloniaDependencyResolver resolver)
     {
         return resolver.GetService<T>()

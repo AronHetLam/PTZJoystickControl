@@ -31,7 +31,7 @@ public class InputViewModel : ViewModelBase, INotifyPropertyChanged
     public float InputValue { get => _input.InputValue; }
     public float RawInputValue { get => _input.RawInputValue; }
     public int MinValue { get => InputType == InputType.Axis ? -1 : 0; }
-    public int MaxValue { get => 1; }
+    public static int MaxValue { get => 1; }
     public float DeadZone { get => _input.DeadZone; set => _input.DeadZone = value; }
     public float Saturation { get => _input.Saturation; set => _input.Saturation = value; }
     public string OutputValue { get => $"{_input.CurrentDirection} {_input.CurrentValue}"; }
