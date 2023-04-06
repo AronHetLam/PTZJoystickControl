@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		Width="350" 
+		Height="150"
+		CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        x:Class="PtzJoystickControl.Gui.Views.UpdateDialogWindow"
+		TransparencyLevelHint="AcrylicBlur"
+		ExtendClientAreaToDecorationsHint="True"	
+		Background="Transparent"
+        Title="Update Checker"
+		Icon="/Assets/icon.ico"
+		x:Name="Window">
+
+	<Grid RowDefinitions="Auto, *, Auto" Background="Transparent">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		
+		<ExperimentalAcrylicBorder IsVisible="{Binding AcrylicEnabled}" IsHitTestVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="3">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial BackgroundSource="Digger" TintColor="black" TintOpacity="0.75" MaterialOpacity=".65" />
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+		<Border IsVisible="{Binding !AcrylicEnabled}" Background="#3a3a3a" IsHitTestVisible="False" Grid.ColumnSpan="2" Grid.RowSpan="3"/>
+		
+		<StackPanel IsVisible="{Binding IsExtendedIntoWindowDecorations, ElementName=Window}}" Height="30" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="{Binding TitleHorizontalAlignment}">
+			<Image Source="/Assets/icon.ico" Height="22" HorizontalAlignment="Left" Margin="4"/>
+			<TextBlock Text="Update Checker" VerticalAlignment="Center"/>
+		</StackPanel>
+
+		<StackPanel Grid.Row="1" VerticalAlignment="Center" Margin="5">
+
+			<TextBlock IsVisible="{Binding IsAvailable}" Text="Update Available!"/>
+
+			<TextBlock IsVisible="{Binding Error}" Text="An error occured while checking for updates"/>
+			<TextBlock IsVisible="{Binding Error}" Text="{Binding ErrorMessage, StringFormat=Message: {0}}" TextTrimming="CharacterEllipsis"/>
+
+			<TextBlock IsVisible="{Binding NotAvailableOrError}" Text="No Update Available"/>
+ 
+			<TextBlock IsVisible="{Binding !!LatestVersion }" Text="{Binding LatestVersion, StringFormat=Latest Version: {0}}"/>
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5" Spacing="5">
+			<Button Command="{Binding Download}" IsVisible="{Binding IsAvailable}">Download</Button>
+			<Button Command="{Binding Close, ElementName=Window }">OK</Button>
+		</StackPanel>
+	</Grid>
+</Window>

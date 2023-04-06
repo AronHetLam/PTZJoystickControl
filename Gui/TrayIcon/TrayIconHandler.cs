@@ -15,13 +15,12 @@ namespace PtzJoystickControl.Gui.TrayIcon
     {
         private readonly IAssetLoader _assetLoader;
         private readonly string _assemblyName;
-        private Avalonia.Controls.TrayIcon _trayIcon;
+        private readonly Avalonia.Controls.TrayIcon _trayIcon;
 
         public TrayIconHandler(IAssetLoader assetLoader)
         {
             _assetLoader = assetLoader ?? throw new ArgumentNullException(nameof(assetLoader));
-            var t = Assembly.GetExecutingAssembly();
-            _assemblyName = t.GetName().Name;
+            _assemblyName = Assembly.GetExecutingAssembly().GetName().Name!;
 
             // Initialize Tray Icon
             _trayIcon = new Avalonia.Controls.TrayIcon()
@@ -64,7 +63,7 @@ namespace PtzJoystickControl.Gui.TrayIcon
                 ctx.DrawBitmap(bitmap.PlatformImpl, 1, new Rect(0, 0, sizes[i], sizes[i]), new Rect(0, 0, sizes[i], sizes[i]));
                 ctx.DrawText(brush, new Point(0, 0), formattedTextt.PlatformImpl);
 
-                using MemoryStream ms = new MemoryStream();
+                using var ms = new MemoryStream();
                 rtbb.Save(ms);
                 ms.Position = 0;
 
@@ -90,17 +89,22 @@ namespace PtzJoystickControl.Gui.TrayIcon
             var headerItem = new NativeMenuItem("PTZ Joystick Control");
             headerItem.Click += (object? s , EventArgs e) => OnShowClicked?.Invoke(s, e);
 
+            var upadteCheckItem = new NativeMenuItem("Check for updates");
+            upadteCheckItem.Click += (object? s, EventArgs e) => OnUpdateCheckClicked?.Invoke(s, e);
+
             var quitItem = new NativeMenuItem("Quit");
             quitItem.Click += (object? s , EventArgs e) => OnQuitClicked?.Invoke(s, e);
 
             return new NativeMenu{
                 headerItem,
+                upadteCheckItem,
                 new NativeMenuItemSeparator(),
                 quitItem
             };
         }
 
         public event EventHandler? OnShowClicked;
+        public event EventHandler? OnUpdateCheckClicked;
         public event EventHandler? OnQuitClicked;
     }
 }
