@@ -46,26 +46,49 @@ on:
 
 jobs:
 
-  build:
+  bump-version:
+    runs-on: ubuntu-latest
+    
+    outputs: 
+      VERSION: ${{ steps.version-select.outputs.VERSION }}
       
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Bump version
+        if: ${{ github.event_name == 'push' && github.run_attempt == 1 }}
+        uses: SiqiLu/dotnet-bump-version@2.0.0
+        with:
+          version_files: "Gui/Gui.csproj"
+          version_mask: 0.0.1.0
+          version_overwrite: "*.*.*.${{ github.run_number }}"
+
+      - name: Tag version in git and set as output
+        id: version-select
+        run: |
+          version=v$(grep -oP '<Version>\K(.*)(?=\.\d+</Version>)' Gui/Gui.csproj)
+          echo "Version: ${version}"
+          git tag $version
+          git push --tags
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
+
+  build:
+    needs: bump-version
+    runs-on: windows-latest
     strategy:
        matrix:
-          arch: [x86, x64]  
+          arch: [x86, x64]
 
-    runs-on: windows-latest  # For a list of available runner types, refer to
-                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-
-    steps:
+    steps:    
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Install the .NET Core workload
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
 
@@ -73,27 +96,10 @@ jobs:
     #- name: Execute unit tests
     #  run: dotnet test
 
-    - name: Bump version
-      if: ${{ github.event_name == 'push' && github.run_attempt == 1 }}
-      uses: SiqiLu/dotnet-bump-version@2.0.0
-      with:
-        version_files: "Gui/Gui.csproj"
-        version_mask: 0.0.1.0
-        version_overwrite: "*.*.*.${{ github.run_number }}"
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-
-    # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Publish application
       run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Runtime --sc
       env:
         Runtime: ${{ format('win7-{0}', matrix.arch) }}
-
-    - name: Get version
-      run: |
-        $version = (select-string '<Version>(.*)</Version>' Gui\Gui.csproj).matches.groups[1].value
-        echo "Version: ${version}"
-        echo "VERSION=$version" >> $env:GITHUB_ENV
-      
 
     ## Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx
@@ -107,16 +113,22 @@ jobs:
       run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -p:OutputName=$env:OutputName -o Packaging/Windows/Packages -p:platform=$env:Arch #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Arch: ${{ matrix.arch }}
-        OutputName: ${{ format('PTZJoystickControl_{0}_{1}', env.VERSION, matrix.arch) }}
+        OutputName: ${{ format('PTZJoystickControl_{0}_{1}', needs.bump-version.outputs.VERSION, matrix.arch) }}
 
     ## Remove the pfx
     #- name: Remove the pfx
     #  run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
 
-    # Upload the MSIX packages: https://github.com/marketplace/actions/upload-a-build-artifact
-    - name: Upload build artifacts
+    - name: Upload build artifacts (msi packages)
       if: ${{ github.event_name == 'push' }}
       uses: actions/upload-artifact@v3
       with:
-        name: MSIX Packages
+        name: MSI Packages
         path: Packaging/Windows/Packages/**/*.msi
+        
+    - name: GH Release
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+        draft: true
+        tag_name: ${{ needs.bump-version.outputs.VERSION }}
+        files: Packaging/Windows/Packages/**/*.msi
