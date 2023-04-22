@@ -1,41 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-# This workflow will build, test, sign and package a WPF or Windows Forms desktop application
-# built on .NET Core.
-# To learn how to migrate your existing application to .NET Core,
-# refer to https://docs.microsoft.com/en-us/dotnet/desktop-wpf/migration/convert-project-from-net-framework
-#
-# To configure this workflow:
-#
-# 1. Configure environment variables
-# GitHub sets default environment variables for every workflow run.
-# Replace the variables relative to your project in the "env" section below.
-#
-# 2. Signing
-# Generate a signing certificate in the Windows Application
-# Packaging Project or add an existing signing certificate to the project.
-# Next, use PowerShell to encode the .pfx file using Base64 encoding
-# by running the following Powershell script to generate the output string:
-#
-# $pfx_cert = Get-Content '.\SigningCertificate.pfx' -Encoding Byte
-# [System.Convert]::ToBase64String($pfx_cert) | Out-File 'SigningCertificate_Encoded.txt'
-#
-# Open the output file, SigningCertificate_Encoded.txt, and copy the
-# string inside. Then, add the string to the repo as a GitHub secret
-# and name it "Base64_Encoded_Pfx."
-# For more information on how to configure your signing certificate for
-# this workflow, refer to https://github.com/microsoft/github-actions-for-desktop-apps#signing
-#
-# Finally, add the signing certificate password to the repo as a secret and name it "Pfx_Key".
-# See "Build the Windows Application Packaging project" below to see how the secret is used.
-#
-# For more information on GitHub Actions, refer to https://github.com/features/actions
-# For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
-# refer to https://github.com/microsoft/github-actions-for-desktop-apps
-
 name: Build release packages
 
 on:
@@ -67,13 +29,13 @@ jobs:
       - name: Tag version in git and set as output
         id: version-select
         run: |
-          version=v$(grep -oP '<Version>\K(.*)(?=\.\d+</Version>)' Gui/Gui.csproj)
+          version=$(grep -oP '<Version>\K(.*)(?=\.\d+</Version>)' Gui/Gui.csproj)
           echo "Version: ${version}"
-          git tag $version
+          git tag v$version
           git push --tags
           echo "VERSION=$version" >> $GITHUB_OUTPUT
 
-  build:
+  build-windows-packeges:
     needs: bump-version
     runs-on: windows-latest
     strategy:
@@ -97,7 +59,7 @@ jobs:
     #  run: dotnet test
 
     - name: Publish application
-      run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Runtime --sc
+      run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Runtime --self-contained
       env:
         Runtime: ${{ format('win7-{0}', matrix.arch) }}
 
@@ -113,7 +75,7 @@ jobs:
       run: dotnet build Packaging/Windows/Windows.wixproj -c PublishRelease -p:OutputName=$env:OutputName -o Packaging/Windows/Packages -p:platform=$env:Arch #-p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx -p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Arch: ${{ matrix.arch }}
-        OutputName: ${{ format('PTZJoystickControl_{0}_{1}', needs.bump-version.outputs.VERSION, matrix.arch) }}
+        OutputName: ${{ format('PTZJoystickControl_v{0}_win_{1}', needs.bump-version.outputs.VERSION, matrix.arch) }}
 
     ## Remove the pfx
     #- name: Remove the pfx
@@ -127,8 +89,71 @@ jobs:
         path: Packaging/Windows/Packages/**/*.msi
         
     - name: GH Release
+      if: ${{ github.event_name == 'push' }}
       uses: softprops/action-gh-release@v0.1.15
       with:
-        draft: true
-        tag_name: ${{ needs.bump-version.outputs.VERSION }}
+        prerelease: true
+        tag_name: v${{ needs.bump-version.outputs.VERSION }}
         files: Packaging/Windows/Packages/**/*.msi
+
+  build-macos-packeges:
+    needs: bump-version
+    runs-on: macos-latest
+
+    steps:    
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Build
+      run: dotnet publish Gui/Gui.csproj -c PublishRelease -r osx-x64 --self-contained #/p:PublishSingleFile=true /p:PublishTrimmed=true
+
+    - name: Install Dependencies
+      run: |
+        brew install create-dmg
+
+    - name: Copy Files into app structure
+      run: |
+        mkdir -p dist/PTZJoystickControl.app/Contents/MacOS
+        mkdir -p dist/PTZJoystickControl.app/Contents/Resources
+        cp Gui/bin/PublishRelease/net6.0/osx-x64/publish/* dist/PTZJoystickControl.app/Contents/MacOS
+        cp Packaging/Mac/icon.icns dist/PTZJoystickControl.app/Contents/Resources/
+        cp Packaging/Mac/Info.plist dist/PTZJoystickControl.app/Contents/
+
+    - name: Update Info.plist version
+      run: sed -i '' -e ':a' -e 'N' -e '$!ba' -e "s/<key>CFBundleVersion<\/key>\n\s*<string>[^<]*<\/string>/<key>CFBundleVersion<\/key>\n        <string>{{ needs.bump-version.outputs.VERSION }}<\/string>/g" dist/PTZJoystickControl.app/Contents/Info.plist
+
+    - name: Create Installer
+      run: |
+        create-dmg \
+          --volname "PTZJoystickControl.app" \
+          --volicon "dist/PTZJoystickControl.app/Contents/Resources/icon.icns" \
+          --window-pos 200 120 \
+          --window-size 800 400 \
+          --icon-size 100 \
+          --icon "dist/PTZJoystickControl.app/Contents/Resources/icon.icns" 200 190 \
+          --hide-extension "PTZJoystickControl.app" \
+          --app-drop-link 600 185 \
+          ${{ env.OutputName }}.dmg \
+          dist/PTZJoystickControl.app
+      env:
+          OutputName: ${{ format('PTZJoystickControl_v{0}_osx_x64', needs.bump-version.outputs.VERSION) }}
+
+    - name: Upload build artifacts (dmg package)
+      if: ${{ github.event_name == 'push' }}
+      uses: actions/upload-artifact@v3
+      with:
+          name: DMG Package
+          path: "*.dmg"
+
+    - name: GH Release
+      if: ${{ github.event_name == 'push' }}
+      uses: softprops/action-gh-release@v0.1.15
+      with:
+          prerelease: true
+          tag_name: v${{ needs.bump-version.outputs.VERSION }}
+          files: "*.dmg"
