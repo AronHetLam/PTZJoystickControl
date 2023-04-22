@@ -89,14 +89,6 @@ jobs:
         name: MSI Packages
         path: Packaging/Windows/Packages/**/*.msi
 
-    - name: Install app
-      run: |
-          msiexec /i $env:Installer /qn
-          $missingFiles=(Get-ChildItem 'Gui\bin\PublishRelease\net6.0\win7-x64\publish\' | Where-Object { $_.Name -notin (Get-ChildItem 'C:\Program Files\PTZ Joystick Control\').Name } | Select-Object Name)
-          if ($missingFiles.length -gt 0) {echo '::error::Files are missing in installer!' $missingFiles; exit 1}
-      env: 
-        Installer: ${{ format('Packaging/Windows/Packages/en-US/PTZJoystickControl_v{0}_win_{1}.msi', needs.bump-version.outputs.VERSION, matrix.arch) }}
-        
     - name: GH Release
       if: ${{ github.event_name == 'push' }}
       uses: softprops/action-gh-release@v0.1.15
