@@ -1,14 +1,16 @@
 # PTZ Joystick Control
 
-PTZ Joystick Control is a simple application for controlling PTZ cameras supporting the VISCA over IP protocol. This software provides an intuitive joystick interface for precise control over your camera's movements.
+PTZ Joystick Control simply lets you use any joystick or gamepad to control PTZ cameras via VISCA over IP. 🕹️🎮
 
 ## Features
   - Intuitive joystick interface.
   - Fully customizable button and axis mapping.
-  - Control pan, tilt, zoom, and focus of your camera
-  - Support for VISCA over IP protocol
-  - Easy to use and configure
-  - ~Cross-platform compatibility~ (coming)
+  - Control pan, tilt, zoom, and focus of your camera and more.
+  - Supports VISCA over IP.
+  - Easy to use and configure.
+  - Tray icon indicating the selected camera.
+  - Cross-platform compatible for Windows and macOs.
+    - See Linux and RaspberryPi support further down.
 
 ## Installation
   1. Download the latest release of PTZ Joystick Control from the releases page.
@@ -21,6 +23,11 @@ PTZ Joystick Control is a simple application for controlling PTZ cameras support
   3. Map your joystick inputs to camera commands.
   4. Add and configure your VISCA over IP compatible cameras.
   5. Use the joystick to control the movements of your camera.
+
+## Linux and RaspberryPi support
+The application also runs on Linux, and even a RaspberryPi, however I haven't got to releasing binaries for those yet.
+On x86 and x64 Linux machienes you can build from source using ´dotnet build´, and it should be able to run.
+For linux-ARM devices such as RaspberryPi you additionally need to compile libSDL2 yourself, and add it to the build output for it to run.
 
 ## License
 This project is licensed under the GPL-3 License - see the LICENSE file for details.
