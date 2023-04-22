@@ -30,7 +30,7 @@ On x86 and x64 Linux machienes you can build from source using ´dotnet build´,
 For linux-ARM devices such as RaspberryPi you additionally need to compile libSDL2 yourself, and add it to the build output for it to run.
 
 ## License
-This project is licensed under the GPL-3 License - see the LICENSE file for details.
+This project is licensed under the GPL-3 License - see the LICENSE.txt file for details.
 
 ## Contributing
 Contributions are always welcome! Please feel free to submit a pull request or open an issue if you encounter any problems with the software.
