@@ -323,6 +323,9 @@
 				<File Name="netstandard.dll"/>
 			</Component>
 			<Component>
+				<File Name="Octokit.dll"/>
+			</Component>
+			<Component>
 				<File Name="ReactiveUI.dll"/>
 			</Component>
 			<Component>
