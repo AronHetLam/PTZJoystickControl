@@ -14,10 +14,6 @@
 		<string>10.12</string>-->
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
-		<key>LSApplicationCategoryType</key>
-		<string>public.app-category.utilities</string>
-		<key>NSHighResolutionCapable</key>
-		<true/>
 		<key>CFBundleExecutable</key>
 		<string>Gui</string>
 		<key>CFBundleIconFile</key>

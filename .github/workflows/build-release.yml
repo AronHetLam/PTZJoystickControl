@@ -28,6 +28,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tag version in git and set as output
+        if: ${{ github.event_name == 'push' && github.run_attempt == 1 }}
         id: version-select
         run: |
           version=$(grep -oP '<Version>\K(.*)(?=\.\d+</Version>)' Gui/Gui.csproj)
