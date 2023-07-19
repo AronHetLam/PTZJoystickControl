@@ -40,7 +40,7 @@ internal class Program
         var appBuilder = BuildAvaloniaApp();
 
         // Mutex to ensure only one instance will 
-        var mutex = new Mutex(false, "PTZJoystickControlMutex/BFD0A32E-F433-49E7-AB74-B49FC95012D0");
+        var mutex = new Mutex(false, "PTZJoystickControlMutex_BFD0A32E-F433-49E7-AB74-B49FC95012D0");
         try
         {
             if (!mutex.WaitOne(0, false))
