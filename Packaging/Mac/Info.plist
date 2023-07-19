@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+		<key>CFBundleName</key>
+		<string>PTZ Joystick Control</string>
 		<key>CFBundleDisplayName</key>
 		<string>PTZ Joystick Control</string>
 		<key>CFBundleIdentifier</key>
 		<string>com.github.AronHetLam.PTZJoystickControl</string>
 		<key>CFBundleVersion</key>
         <string>0.0.0</string>
-		<key>LSMinimumSystemVersion</key>
-		<string>10.12</string>
-		<key>LSApplicationCategoryType</key>
-		<string>public.app-category.utilities</string>
-		<key>NSHighResolutionCapable</key>
-		<true/>
+		<!--<key>LSMinimumSystemVersion</key>
+		<string>10.12</string>-->
+		<key>CFBundlePackageType</key>
+		<string>APPL</string>
 		<key>CFBundleExecutable</key>
 		<string>Gui</string>
+		<key>CFBundleIconFile</key>
+		<string>icon.icns</string>
 	</dict>
 </plist>

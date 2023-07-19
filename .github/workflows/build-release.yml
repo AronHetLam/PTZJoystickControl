@@ -28,6 +28,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tag version in git and set as output
+        if: ${{ github.event_name == 'push' && github.run_attempt == 1 }}
         id: version-select
         run: |
           version=$(grep -oP '<Version>\K(.*)(?=\.\d+</Version>)' Gui/Gui.csproj)
@@ -83,7 +84,6 @@ jobs:
     #  run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
 
     - name: Upload build artifacts (msi packages)
-      if: ${{ github.event_name == 'push' }}
       uses: actions/upload-artifact@v3
       with:
         name: MSI Packages
@@ -145,7 +145,6 @@ jobs:
           OutputName: ${{ format('PTZJoystickControl_v{0}_osx_x64', needs.bump-version.outputs.VERSION) }}
 
     - name: Upload build artifacts (dmg package)
-      if: ${{ github.event_name == 'push' }}
       uses: actions/upload-artifact@v3
       with:
           name: DMG Package
