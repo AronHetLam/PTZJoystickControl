@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using PtzJoystickControl.Core.ViscaCommands;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace PtzJoystickControl.Core.Devices;
@@ -6,7 +7,6 @@ namespace PtzJoystickControl.Core.Devices;
 public abstract class ViscaDeviceBase : INotifyPropertyChanged
 {
     protected string name = null!;
-    protected byte address = 0x01;
     protected int sendWaitTime = 30;
     protected byte[] sendBuffer = new byte[128];
     protected byte[] receiveBuffer = new byte[128];
@@ -15,7 +15,7 @@ public abstract class ViscaDeviceBase : INotifyPropertyChanged
     protected DateTime lastSendTime = DateTime.UtcNow;
     protected DateTime lastReceiveTime = DateTime.MinValue;
 
-    protected byte powerCmd;
+    protected Power powerCmd;
 
     protected byte panSpeed = 0x04;
     protected byte tiltSpeed = 0x04;
@@ -25,13 +25,14 @@ public abstract class ViscaDeviceBase : INotifyPropertyChanged
     protected byte zoomCmd = 0x00;
 
     protected byte focusCmd;
-    protected byte focusModeCmd;
-    protected byte focusLockCmd;
+    protected FocusMode focusModeCmd;
+    protected FocusLock focusLockCmd;
 
-    protected byte presetCmd;
+    protected Preset presetCmd;
     protected byte presetCmdNumber;
     protected byte presetRecallSpeed = 0x04;
 
+    protected ViscaCommandBuilder commandBuilder;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -49,6 +50,7 @@ public abstract class ViscaDeviceBase : INotifyPropertyChanged
     public ViscaDeviceBase(string name)
     {
         Name = name;
+        commandBuilder = new ViscaCommandBuilder((byte)0x81);
     }
     
     protected internal Action<ViscaDeviceBase, byte[], int>? InquiryReplyParser { get; set; }
@@ -75,8 +77,8 @@ public abstract class ViscaDeviceBase : INotifyPropertyChanged
 
     public byte ViscaAddress
     {
-        get => address;
-        set => address = 0 < value && value < 128 
+        get => commandBuilder.Address;
+        set => commandBuilder.Address = 0 < value && value < 128 
             ? value
             : throw new ArgumentOutOfRangeException($"ViscaAddress must be between 1 and 127. {value} was given.");
     }

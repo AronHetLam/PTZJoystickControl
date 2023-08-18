@@ -18,6 +18,7 @@ public abstract class ViscaIPDeviceBase : ViscaDeviceBase
     {
         Name = name;
         ViscaIpEndpont = viscaEndpint ?? new IPEndPoint(System.Net.IPAddress.Any, 5678);
+        ViscaAddress = 0x81;
     }
 
     public int remotePacketId { get; set; }

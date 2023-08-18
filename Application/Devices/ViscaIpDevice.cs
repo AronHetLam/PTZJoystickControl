@@ -123,7 +123,7 @@ public class ViscaIpDevice : ViscaIPDeviceBase
 
     public override void Power(Power power)
     {
-        powerCmd = (byte)power;
+        powerCmd = power;
         AddCommand(AddPowerCommand);
     }
 
@@ -173,7 +173,7 @@ public class ViscaIpDevice : ViscaIPDeviceBase
             zoomChanged = true;
         }
 
-        zoomCmd = zoomDir == (byte)ZoomDir.Stop ? (byte)0x00 : (byte)((byte)zoomDir | zoomSpeed & 0x0f);
+        zoomCmd = (byte)(zoomDir == ZoomDir.Stop ? 0x00 : ((byte)zoomDir | zoomSpeed & 0x0f));
 
         if (zoomChanged)
         {
@@ -203,19 +203,19 @@ public class ViscaIpDevice : ViscaIPDeviceBase
 
     public override void FocusMode(FocusMode focusMode)
     {
-        focusModeCmd = (byte)focusMode;
+        focusModeCmd = focusMode;
         AddCommand(AddFocusModeCommand);
     }
 
     public override void FocusLock(FocusLock focusLock)
     {
-        focusLockCmd = (byte)focusLock;
+        focusLockCmd = focusLock;
         AddCommand(AddFocusLockCommand);
     }
 
     public override void Preset(Preset preset, byte presetNumber)
     {
-        presetCmd = (byte)preset;
+        presetCmd = preset;
         presetCmdNumber = presetNumber;
         AddCommand(AddPresetCommand);
     }
@@ -228,113 +228,56 @@ public class ViscaIpDevice : ViscaIPDeviceBase
 
     public ViscaIPHeaderType AddPowerCommand()
     {
-        // 81 01 04 00 0X FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Command;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.Camera;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandType.Power;
-        tmpBuffer[tmpBuffIndex++] = powerCmd;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildPowerCommand(ref tmpBuffer, ref tmpBuffIndex, powerCmd);
         return ViscaIPHeaderType.Command;
     }
 
     public ViscaIPHeaderType AddPowerInquiry()
     {
-        // 81 09 04 00 FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Inquiry;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.Camera;
-        tmpBuffer[tmpBuffIndex++] = (byte)InquiryType.Power;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildPowerInquiry(ref tmpBuffer, ref tmpBuffIndex);
         InquiryReplyParser = ViscaCommandParser.ParsePowerInquiryReply;
         return ViscaIPHeaderType.Inquery;
     }
 
     private ViscaIPHeaderType AddPanTiltCommand()
     {
-        // 81 01 06 01 VV WW XX YY FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Command;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.PanTilt;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandType.PanTilt;
-        tmpBuffer[tmpBuffIndex++] = panSpeed;
-        tmpBuffer[tmpBuffIndex++] = tiltSpeed;
-        tmpBuffer[tmpBuffIndex++] = (byte)panDir;
-        tmpBuffer[tmpBuffIndex++] = (byte)tiltDir;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildPanTiltCommand(ref tmpBuffer, ref tmpBuffIndex, panSpeed, tiltSpeed, panDir, tiltDir);
         return ViscaIPHeaderType.Command;
     }
 
     private ViscaIPHeaderType AddZoomCommand()
     {
-        // 81 01 04 07 xp FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Command;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.Camera;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandType.PanTiltZoomAndLimit;
-        tmpBuffer[tmpBuffIndex++] = zoomCmd;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildZoomCommand(ref tmpBuffer, ref tmpBuffIndex, zoomCmd);
         return ViscaIPHeaderType.Command;
     }
 
     private ViscaIPHeaderType AddFocusCommand()
     {
-        // 81 01 04 08 2p FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Command;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.Camera;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandType.Focus;
-        tmpBuffer[tmpBuffIndex++] = focusCmd;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildFocusCommand(ref tmpBuffer, ref tmpBuffIndex, focusCmd);
         return ViscaIPHeaderType.Command;
     }
 
     private ViscaIPHeaderType AddFocusModeCommand()
     {
-        // 81 01 04 08 2p FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Command;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.Camera;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandType.FocusMode;
-        tmpBuffer[tmpBuffIndex++] = focusModeCmd;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildFocusModeCommand(ref tmpBuffer, ref tmpBuffIndex, focusModeCmd);
         return ViscaIPHeaderType.Command;
     }
 
     private ViscaIPHeaderType AddFocusLockCommand()
     {
-        // 81 0a 04 68 0x FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.FocusLock;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.Camera;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandType.FocusLock;
-        tmpBuffer[tmpBuffIndex++] = focusLockCmd;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildFocusLockCommand(ref tmpBuffer, ref tmpBuffIndex, focusLockCmd);
         return ViscaIPHeaderType.Command;
     }
 
     private ViscaIPHeaderType AddPresetCommand()
     {
-        // 81 01 04 3F 0x pp FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Command;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.Camera;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandType.Preset;
-        tmpBuffer[tmpBuffIndex++] = presetCmd;
-        tmpBuffer[tmpBuffIndex++] = presetCmdNumber;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildPresetCommand(ref tmpBuffer, ref tmpBuffIndex, presetCmd, presetCmdNumber);
         return ViscaIPHeaderType.Command;
     }
 
     private ViscaIPHeaderType AddPresetRecallSpeedCommand()
     {
-        // 81 01 06 01 pp FF
-        tmpBuffer[tmpBuffIndex++] = 0x81;
-        tmpBuffer[tmpBuffIndex++] = (byte)PacketType.Command;
-        tmpBuffer[tmpBuffIndex++] = (byte)CommandCategory.PanTilt;
-        tmpBuffer[tmpBuffIndex++] = 0x01;
-        tmpBuffer[tmpBuffIndex++] = presetRecallSpeed;
-        tmpBuffer[tmpBuffIndex++] = (byte)Terminator.Terminate;
+        commandBuilder.BuildPresetRecallSpeedCommand(ref tmpBuffer, ref tmpBuffIndex, presetRecallSpeed);
         return ViscaIPHeaderType.Command;
     }
 
