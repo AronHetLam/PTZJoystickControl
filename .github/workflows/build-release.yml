@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
 
@@ -28,6 +29,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tag version in git and set as output
+        if: ${{ github.event_name == 'push' && github.run_attempt == 1 }}
         id: version-select
         run: |
           version=$(grep -oP '<Version>\K(.*)(?=\.\d+</Version>)' Gui/Gui.csproj)
@@ -50,7 +52,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 9.0.x
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
@@ -62,7 +64,7 @@ jobs:
     - name: Publish application
       run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Runtime --self-contained
       env:
-        Runtime: ${{ format('win7-{0}', matrix.arch) }}
+        Runtime: ${{ format('win-{0}', matrix.arch) }}
 
     ## Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx
@@ -83,8 +85,7 @@ jobs:
     #  run: Remove-Item -path $env:Wap_Project_Directory\GitHubActionsWorkflow.pfx
 
     - name: Upload build artifacts (msi packages)
-      if: ${{ github.event_name == 'push' }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: MSI Packages
         path: Packaging/Windows/Packages/**/*.msi
@@ -108,7 +109,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 9.0.x
 
     - name: Build
       run: dotnet publish Gui/Gui.csproj -c PublishRelease -r osx-x64 --self-contained #/p:PublishSingleFile=true /p:PublishTrimmed=true
@@ -121,7 +122,7 @@ jobs:
       run: |
         mkdir -p dist/PTZJoystickControl.app/Contents/MacOS
         mkdir -p dist/PTZJoystickControl.app/Contents/Resources
-        cp Gui/bin/PublishRelease/net6.0/osx-x64/publish/* dist/PTZJoystickControl.app/Contents/MacOS
+        cp Gui/bin/PublishRelease/net9.0/osx-x64/publish/* dist/PTZJoystickControl.app/Contents/MacOS
         cp Packaging/Mac/icon.icns dist/PTZJoystickControl.app/Contents/Resources/
         cp Packaging/Mac/Info.plist dist/PTZJoystickControl.app/Contents/
 
@@ -136,17 +137,16 @@ jobs:
           --window-pos 200 120 \
           --window-size 800 400 \
           --icon-size 100 \
-          --icon "dist/PTZJoystickControl.app/Contents/Resources/icon.icns" 200 190 \
+          --icon "PTZJoystickControl.app" 200 150 \
           --hide-extension "PTZJoystickControl.app" \
-          --app-drop-link 600 185 \
+          --app-drop-link 600 150 \
           ${{ env.OutputName }}.dmg \
           dist/PTZJoystickControl.app
       env:
           OutputName: ${{ format('PTZJoystickControl_v{0}_osx_x64', needs.bump-version.outputs.VERSION) }}
 
     - name: Upload build artifacts (dmg package)
-      if: ${{ github.event_name == 'push' }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: DMG Package
           path: "*.dmg"
