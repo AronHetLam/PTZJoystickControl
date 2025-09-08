@@ -64,7 +64,7 @@ jobs:
     - name: Publish application
       run: dotnet publish Gui/Gui.csproj -c PublishRelease -r $env:Runtime --self-contained
       env:
-        Runtime: ${{ format('win7-{0}', matrix.arch) }}
+        Runtime: ${{ format('win-{0}', matrix.arch) }}
 
     ## Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx
@@ -122,7 +122,7 @@ jobs:
       run: |
         mkdir -p dist/PTZJoystickControl.app/Contents/MacOS
         mkdir -p dist/PTZJoystickControl.app/Contents/Resources
-        cp Gui/bin/PublishRelease/net6.0/osx-x64/publish/* dist/PTZJoystickControl.app/Contents/MacOS
+        cp Gui/bin/PublishRelease/net9.0/osx-x64/publish/* dist/PTZJoystickControl.app/Contents/MacOS
         cp Packaging/Mac/icon.icns dist/PTZJoystickControl.app/Contents/Resources/
         cp Packaging/Mac/Info.plist dist/PTZJoystickControl.app/Contents/
 
